@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRIJ - Solana's On-Ramp Infrastructure | Coming Soon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #14F195;
+            --secondary: #9945FF;
+            --dark: #0A0E27;
+            --darker: #050816;
+            --light: #E4E4E7;
+            --white: #FFFFFF;
+            --gradient: linear-gradient(135deg, #14F195 0%, #9945FF 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: rgba(20, 241, 149, 0.1);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 600px;
+            height: 600px;
+            background: rgba(153, 69, 255, 0.1);
+            bottom: -300px;
+            right: -300px;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Main container */
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+            text-align: center;
+            z-index: 1;
+        }
+
+        /* Logo */
+        .logo {
+            font-size: 4rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        /* Tagline */
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.7;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        /* Coming Soon Badge */
+        .coming-soon {
+            display: inline-block;
+            background: rgba(20, 241, 149, 0.2);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        /* CTA Buttons */
+        .cta-section {
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease 0.5s both;
+        }
+
+        .cta-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            background: var(--gradient);
+            color: var(--darker);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(20, 241, 149, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--primary);
+            color: var(--darker);
+        }
+
+        /* Email Section */
+        .email-section {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .email-title {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .email-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: var(--white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .email-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .email-submit {
+            padding: 0.75rem 2rem;
+            background: var(--gradient);
+            color: var(--darker);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .email-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(20, 241, 149, 0.3);
+        }
+
+        /* Success message */
+        .success-message {
+            display: none;
+            background: rgba(20, 241, 149, 0.2);
+            border: 1px solid var(--primary);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .email-form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .email-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <h1 class="logo">BRIJ</h1>
+        <h2 class="tagline">Solana's On-Ramp Infrastructure</h2>
+        <p class="subtitle">Connecting the world's on-ramp providers with Solana's vibrant ecosystem</p>
+        
+        <div class="coming-soon">Coming Soon</div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h3 class="cta-title">Interested in early access?</h3>
+            <div class="cta-buttons">
+                <a href="https://calendly.com/brij-onramps" class="cta-button">
+                    I'm an On-Ramp Provider
+                </a>
+                <a href="https://calendly.com/brij-dapps" class="cta-button secondary">
+                    I'm a dApp/Wallet
+                </a>
+            </div>
+        </div>
+
+        <!-- Email Section -->
+        <div class="email-section">
+            <h3 class="email-title">Get notified when we launch</h3>
+            <form class="email-form" id="emailForm">
+                <input 
+                    type="email" 
+                    class="email-input" 
+                    placeholder="Enter your email"
+                    required
+                    id="emailInput"
+                >
+                <button type="submit" class="email-submit">Notify Me</button>
+            </form>
+            <div class="success-message" id="successMessage">
+                Thanks! We'll keep you updated on our launch.
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Building the future of fiat-to-crypto on Solana</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="mailto:info@brij.fi">info@brij.fi</a>
+        </p>
+    </div>
+
+    <script>
+        // Email form handling
+        document.getElementById('emailForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('emailInput').value;
+            const submitButton = e.target.querySelector('.email-submit');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Disable button and show loading state
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
+            
+            // Here you would normally send the email to your backend
+            // For now, we'll simulate a successful submission
+            setTimeout(() => {
+                // Show success message
+                successMessage.style.display = 'block';
+                
+                // Reset form
+                document.getElementById('emailInput').value = '';
+                submitButton.textContent = 'Notify Me';
+                submitButton.disabled = false;
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            }, 1000);
+            
+            // In production, replace the above with:
+            /*
+            try {
+                const response = await fetch('YOUR_BACKEND_ENDPOINT', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    document.getElementById('emailInput').value = '';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                submitButton.textContent = 'Notify Me';
+                submitButton.disabled = false;
+            }
+            */
+        });
+
+        // Add UTM tracking for CTA buttons
+        const ctaButtons = document.querySelectorAll('.cta-button');
+        ctaButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Track which button was clicked
+                const buttonType = button.textContent.includes('Provider') ? 'provider' : 'dapp';
+                console.log('CTA clicked:', buttonType);
+                
+                // You can add analytics tracking here
+                // gtag('event', 'cta_click', { 'button_type': buttonType });
+            });
+        });
+    </script>
+</body>
+</html>
